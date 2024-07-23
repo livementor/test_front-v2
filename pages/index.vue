@@ -16,9 +16,5 @@
 </template>
 
 <script setup lang="ts">
-import type { Task } from '~/types/Task'
-
-// L'endpoint se trouve dans le fichier `server/api/task.ts`
-const response = await useFetch<{ tasks: Task[] }>('/api/tasks')
-const tasks = response.data.value?.tasks || []
+const tasks = await useApi().task.getAll()
 </script>
