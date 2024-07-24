@@ -1,75 +1,44 @@
-# Nuxt 3 Minimal Starter
+### Contexte
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Vous êtes chargé de créer une application de gestion de tâches sous forme de "to-do list" en utilisant les frameworks Vue.js, Nuxt.js. Ce test ne doit pas durer plus de 3h, et si vous n’avez pas terminé ce n’est pas grave nous aurons le temps de débriefer ensemble.
 
-## Setup
+### Objectifs du Test
 
-Make sure to install the dependencies:
+Votre application doit évoluer d'une simple liste de tâches vers une solution plus complexe, intégrant plusieurs fonctionnalités. Vous serez évalué sur :
 
-```bash
-# npm
-npm install
+- **Connaissance de Vue et Nuxt** : Votre capacité à utiliser ces technologies, compte tenu de votre expérience dans ces frameworks.
+- **Organisation, scalabilité et maintenabilité du code** : La structure de votre projet, l'utilisation de bonnes pratiques de développement et la facilité avec laquelle votre code pourrait être lu, étendu ou maintenu.
+- **Compétences en développement front-end** : La capacité à concevoir des composants réactifs et performants.
 
-# pnpm
-pnpm install
+## Build Setup
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+⚠️ Veillez à avoir une version de node >=18
 
 ```bash
-# npm
-npm run dev
+# install dependencies
+$ yarn install
 
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# serve with hot reload at localhost:3000
+$ yarn dev
 ```
 
-## Production
+### Consigne 1 : Fonctionnalités de base
 
-Build the application for production:
+Votre application doit inclure les fonctionnalités suivantes :
 
-```bash
-# npm
-npm run build
+1. Lister les tâches
+2. Créer une nouvelle tâche
+3. Modifier le titre et la description d’une tâche
+4. Supprimer une tâche
 
-# pnpm
-pnpm run build
+Vous avez à disposition un composable `useApi` conçu pour faire des calls API sur le serveur local, dont les endpoints sont dans le dossier /server/api du projet.
 
-# yarn
-yarn build
+### Consigne 2 : Interface Utilisateur
 
-# bun
-bun run build
-```
+Dans cet exercice, vous concevrez et implémenterez une version améliorée de cette interface avec des fonctionnalités permettant une meilleure expérience.
 
-Locally preview production build:
+C’est le moment de faire parler votre créativité et de montrer vos compétences : tri, filtres, réorganisation de l’interface… Le champ des possibles s’offre à vous.
 
-```bash
-# npm
-npm run preview
+### Livrables
 
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Créez une nouvelle branche “votre_nom” + _test sur le repository. Quand c’est terminé, créez une pull-request et demandez une review.
