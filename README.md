@@ -13,9 +13,7 @@ Votre application doit évoluer d'une simple liste de tâches vers une solution 
 - **Compétences en développement front-end** : La capacité à concevoir des composants réactifs et performants.
 
 ### Build Setup
-
-⚠️ Veillez à avoir une version de node >=18
-
+Clonez ce repository, puis à la racine du projet :
 ```bash
 # install dependencies
 $ yarn install
@@ -23,6 +21,7 @@ $ yarn install
 # serve with hot reload at localhost:3000
 $ yarn dev
 ```
+⚠️ Veillez à avoir une version de node >=18
 
 ### Consigne 1 : Fonctionnalités de base
 
