@@ -1,9 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', '@pinia/nuxt'],
-  css: ['~/assets/css/main.scss'],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxt/eslint",
+    "@pinia/nuxt",
+    "shadcn-nuxt",
+  ],
+
+  css: ["~/assets/css/main.scss"],
   eslint: {
     config: {
       stylistic: true,
@@ -12,22 +18,27 @@ export default defineNuxtConfig({
   nitro: {
     storage: {
       redis: {
-        driver: 'redis',
+        driver: "redis",
         /* redis connector options */
         port: 6379, // Redis port
-        host: '127.0.0.1', // Redis host
-        username: '', // needs Redis >= 6
-        password: '',
+        host: "127.0.0.1", // Redis host
+        username: "", // needs Redis >= 6
+        password: "",
         db: 0, // Defaults to 0
         tls: {}, // tls/ssl
       },
     },
   },
   runtimeConfig: {
-    redis: { // Default values
-      host: '',
+    redis: {
+      // Default values
+      host: "",
       port: 0,
       /* other redis connector options */
     },
   },
-})
+  shadcn: {
+    prefix: "",
+    componentDir: "./components/ui",
+  },
+});
