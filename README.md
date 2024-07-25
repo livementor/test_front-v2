@@ -36,11 +36,9 @@ Votre application doit inclure les fonctionnalités suivantes, mises en œuvre d
 
 Dans ce projet, vous allez manipuler des données via des appels API réalisés à l'aide d'un composable nommé `useApi`. Ce composable est conçu pour simplifier l'interaction avec l'API locale, dont les endpoints sont situés dans le dossier `/server/api` du projet.
 
-### Consigne 2 : Interface Utilisateur
+### Consigne 2 : Fonctionnalités améliorées
 
-En plus des fonctionnalités de base, vous pouvez concevoir une interface et des fonctionnalités améliorées qui permettent de gérer un grand nombre de tâches avec une meilleure expérience.
-
-C’est le moment de faire parler votre créativité et de montrer vos compétences : tri, filtres, réorganisation de l’interface… Le champ des possibles s’offre à vous.
+À partir de l’interface produite dans la consigne 1, vous proposerez et implémenterez une ou plusieurs fonctionnalités qui permettent d’améliorer l’interface et l’expérience. C’est le moment de faire parler votre créativité ! 
 
 ### Livrables
 
