@@ -2,7 +2,7 @@
 
 ### Contexte
 
-Vous êtes chargé de créer une application de gestion de tâches sous forme de "to-do list" en utilisant les frameworks Vue.js, Nuxt.js. Ce test ne doit pas durer plus de 3h, et si vous n’avez pas terminé ce n’est pas grave nous aurons le temps de débriefer ensemble.
+Vous êtes chargé de créer une application de gestion de tâches sous forme de "to-do list" en utilisant les frameworks Vue.js et Nuxt.js. Ce test ne doit pas durer plus de 3h, et si vous n’avez pas terminé ce n’est pas grave nous aurons le temps de débriefer ensemble.
 
 ### Objectif
 
