@@ -4,12 +4,12 @@
       <div class="flex flex-col gap-1">
         <input
           v-model="editData.title"
-          placeholder="Modifier le titre"
+          :placeholder="texts.editTitle"
           class="input border border-gray-400 p-2 w-full rounded-md focus:outline-none focus:border-blue-500"
         >
         <input
           v-model="editData.description"
-          placeholder="Modifier la description"
+          :placeholder="texts.editDescription"
           class="input border border-gray-400 p-2 w-full rounded-md focus:outline-none focus:border-blue-500"
         >
       </div>
@@ -77,6 +77,11 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['update']);
+
+const texts = {
+  editTitle: 'Modifier le titre',
+  editDescription: 'Modifier la description',
+};
 
 const isEditing = ref(false);
 const editData = ref({ title: props.task.title, description: props.task.description || '' });
