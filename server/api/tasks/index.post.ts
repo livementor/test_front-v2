@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     description: body.description,
     completed: false,
     createdAt: new Date(),
-    categories: body.categories,
+    categories: body.categories
   }
 
   tasks.push(newTask)

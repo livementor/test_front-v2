@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     return null
   }
 
-  const { title, description, completed, categories } = body
+  const { title, description, completed, categories, dueDate } = body
 
   task.title = title || task.title
   task.description = description || task.description

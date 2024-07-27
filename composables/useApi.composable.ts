@@ -4,6 +4,7 @@ import type { Category } from '~/types/Category'
 export const useApi = () => {
   return {
     categories: {
+      search: (id: number) => $fetch<Category[]>(`/api/categories/${id}`, { method: 'GET' }),
       get: () => $fetch<Category[]>('/api/categories', { method: 'GET' }),
     },
     task: {

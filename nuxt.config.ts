@@ -2,12 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', '@pinia/nuxt'],
+  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxtjs/google-fonts', '@nuxt/ui'],
   css: ['~/assets/css/main.scss'],
   eslint: {
     config: {
       stylistic: true,
     },
+  },
+  googleFonts: {
+    families: {
+      Oswald: true,
+    }
   },
   nitro: {
     storage: {
@@ -31,3 +36,6 @@ export default defineNuxtConfig({
     },
   },
 })
+
+
+//'@nuxtjs/tailwindcss', 

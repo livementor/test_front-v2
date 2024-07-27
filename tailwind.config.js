@@ -2,7 +2,11 @@
 export default {
   content: [],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'Oswald': ['Oswald']
+      },
+    },
   },
   plugins: [],
 }

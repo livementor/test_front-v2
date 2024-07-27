@@ -147,7 +147,7 @@ export default defineNitroPlugin(async () => {
     { id: 5, name: 'Lecture', color: 'purple' },
     { id: 6, name: 'Cuisine', color: 'orange' },
     { id: 7, name: 'Travail', color: 'pink' },
-    { id: 8, name: 'Fitness', color: 'brown' },
+    { id: 8, name: 'Fitness', color: 'white' },
     { id: 9, name: 'Voyage', color: 'gray' },
     { id: 10, name: 'Famille', color: 'indigo' },
     { id: 11, name: 'Social', color: 'cyan' },
