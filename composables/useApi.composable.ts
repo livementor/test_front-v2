@@ -7,10 +7,10 @@ export const useApi = () => {
       get: () => $fetch<Category[]>('/api/categories', { method: 'GET' }),
     },
     task: {
-      post: (payload: any) => {
+      post: (payload: Task) => {
         return $fetch<Task>('/api/tasks', { method: 'POST', body: payload })
       },
-      put: (payload: any) => {
+      put: (payload: Task) => {
         return $fetch<Task>(`/api/tasks/${payload.id}`, { method: 'PUT', body: payload })
       },
       delete: (id: number) => {
