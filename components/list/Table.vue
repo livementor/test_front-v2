@@ -6,7 +6,7 @@
         :key="index"
         class="p-4"
       >
-        <div class="flex justify-between">
+        <div class="flex justify-between p-2">
           <div>
             <div class="flex mb-2">
               <div

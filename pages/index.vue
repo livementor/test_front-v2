@@ -27,7 +27,6 @@
 
 <script setup lang="ts">
 import type { Task } from '../types/Task'
-import type { Category } from '../types/Category'
 import type { Status } from '../types/Status'
 
 const api = useApi()
@@ -37,7 +36,6 @@ const statusOptions: Status[] = [
   { label: 'À faire', value: 'à faire' },
   { label: 'Fait', value: 'fait' },
 ]
-const categories = ref<Category[]>([])
 const tasks = ref<Task[]>([])
 
 const deleteTask = (task: Task) => {
@@ -52,14 +50,6 @@ const updateTask = (id: number) => {
     api.task.put(task)
     return task
   })
-}
-const fetchCategories = async () => {
-  try {
-    categories.value = await api.categories.get()
-  }
-  catch (error) {
-    console.error('Error fetching categories:', error)
-  }
 }
 
 const fetchTasks = async (status: string) => {
@@ -82,7 +72,6 @@ const filter = (status: string) => {
 }
 
 onMounted(() => {
-  fetchCategories()
   fetchTasks('tout')
 })
 </script>
