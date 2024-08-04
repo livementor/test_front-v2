@@ -1,25 +1,25 @@
-import type { Task } from '~/types/Task'
+import type { Task } from "~/types/Task";
 
-const generateID = (): number => Math.floor(Math.random() * 10000)
+const generateID = ():number=>Math.floor(Math.random() * 10000);
 
-export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
-  const storage = useStorage()
+export default defineEventHandler(async (event)=>{
+    const body = await readBody(event);
+    const storage = useStorage();
 
-  const tasks: Task[] = await storage.getItem('tasks') || []
+    const tasks:Task[] = await storage.getItem("tasks") || [];
 
-  const newTask = {
-    id: generateID(),
-    title: body.title,
-    description: body.description,
-    completed: false,
-    createdAt: new Date(),
-    categories: body.categories,
-  }
+    const newTask = {
+        id: generateID(),
+        title: body.title,
+        description: body.description,
+        completed: false,
+        createdAt: new Date(),
+        categories: body.categories,
+    };
 
-  tasks.push(newTask)
+    tasks.push(newTask);
 
-  await storage.setItem('tasks', tasks)
+    await storage.setItem("tasks", tasks);
 
-  return newTask
-})
+    return newTask;
+});

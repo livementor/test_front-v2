@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import ToastMessage from './ToastMessage.vue';
+import ToastMessage from "./ToastMessage.vue";
 
-    const tmStore = useToastMessagesStore();
+const tmStore = useToastMessagesStore();
 </script>
 
 <template>
     <section class="toast-message-container">
-        <ToastMessage v-for="toast in tmStore.toastsMessages" :toast="toast"/>
+        <ToastMessage
+            v-for="(toast, index) in tmStore.toastsMessages"
+            :key="index"
+            :toast="toast"
+        />
     </section>
 </template>
 

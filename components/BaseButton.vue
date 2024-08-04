@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import Color from '~/types/Color';
+import Color from "~/types/Color";
+
 const props = defineProps<{
-    label:string,
-    showLabel?:boolean,
-    color?:Color,
-    nonInteractable?:boolean,
+    label:string
+    showLabel?:boolean
+    color?:Color
+    nonInteractable?:boolean
 }>();
 
-let color = `var(${props.color ?? Color.interactive})`;
+const color = `var(${props.color ?? Color.interactive})`;
 
 const classObject = reactive({
     "base-button--non-interactable": props.nonInteractable,
@@ -16,8 +17,13 @@ const classObject = reactive({
 </script>
 
 <template>
-    <button :title="label" class="base-button" :class="classObject" :style="{'--color': color}">
-        <slot></slot>
+    <button
+        :title="label"
+        class="base-button"
+        :class="classObject"
+        :style="{ '--color': color }"
+    >
+        <slot />
         <span v-if="label && showLabel">{{ label }}</span>
     </button>
 </template>
@@ -38,7 +44,7 @@ const classObject = reactive({
         height: 2rem;
         width: 2rem;
         background-color: white;
-        transition: 
+        transition:
             background-color var(--transition-delay) var(--transition-fn),
             color var(--transition-delay) var(--transition-fn);
 

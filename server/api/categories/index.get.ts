@@ -1,3 +1,3 @@
-export default defineEventHandler((_event) => {
-  return useStorage().getItem('categories')
-})
+export default defineEventHandler((_event)=>{
+    return useStorage().getItem("categories");
+});

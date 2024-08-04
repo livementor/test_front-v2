@@ -1,124 +1,152 @@
 <script setup lang="ts">
-    import type {Task} from "~/types/Task.js";
-    import BaseButton from "./BaseButton.vue";
-    import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-    import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
-    import { faArrowRotateLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
-    import IconButton from "./BaseButton.vue";
-    import { useTaskController } from "~/composables/useTaskController.composable";
-    import ConfirmationDialog from "./ConfirmationDialog.vue";
-    import Color from "~/types/Color.js";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faArrowRotateLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
+import BaseButton from "./BaseButton.vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { useTaskController } from "~/composables/useTaskController.composable";
+import type { Task } from "~/types/Task.js";
+import Color from "~/types/Color.js";
 import { ToastMessageType } from "~/types/ToastMessage";
-    
-    const props = defineProps<{
-        task:Task,
-        onNewTaskUpdate?:(task:Task|false)=>void,
-    }>();
 
-    const tasksStore = useTasksStore();
-    const taskController = useTaskController();
-    const toastMessageStore = useToastMessagesStore();
+const props = defineProps<{
+    task:Task
+    onNewTaskUpdate?:(task:Task | false)=>void
+}>();
 
-    const isTaskCreation = props.task.id === -1;
+const tasksStore = useTasksStore();
+const taskController = useTaskController();
+const toastMessageStore = useToastMessagesStore();
 
-    let editMode = ref(isTaskCreation);
-    let title = ref(props.task.title);
-    let description = ref(props.task.description);
-    let showDeletionConfirmationDialog = ref(false);
+const isTaskCreation = props.task.id === -1;
 
-    const onChangeTaskCheckbox = async (checked:boolean)=>{
-        const updatedTask = await taskController.toggleTaskCompletion(props.task, checked);
-        tasksStore.updateTask(updatedTask);
+const editMode = ref(isTaskCreation);
+const title = ref(props.task.title);
+const description = ref(props.task.description);
+const showDeletionConfirmationDialog = ref(false);
+
+const onChangeTaskCheckbox = async (checked:boolean)=>{
+    const updatedTask = await taskController.toggleTaskCompletion(props.task, checked);
+    tasksStore.updateTask(updatedTask);
+};
+
+const activeEditMode = ()=>{
+    editMode.value = true;
+};
+
+const cancelEdition = ()=>{
+    title.value = props.task.title;
+    description.value = props.task.description;
+    editMode.value = false;
+    if (isTaskCreation && props.onNewTaskUpdate) {
+        props.onNewTaskUpdate(false);
+    }
+};
+
+const confirmEdition = async ()=>{
+    const newTitle = title.value !== props.task.title ? title.value : undefined;
+    let newDescription:string | null | undefined = undefined;
+    if (description.value !== props.task.description) {
+        newDescription = description.value && description.value.length > 0 ? description.value : null;
     }
 
-    const activeEditMode = ()=>{
-        editMode.value = true;
+    if (isTaskCreation && (!newTitle || newTitle.length === 0)) {
+        toastMessageStore.addToastMessage("The task title is required", ToastMessageType.alert);
+        return;
     }
 
-    const cancelEdition = ()=>{
-        title.value = props.task.title;
-        description.value = props.task.description;
-        editMode.value = false;
-        if (isTaskCreation && props.onNewTaskUpdate) {
-            props.onNewTaskUpdate(false);
+    if (newTitle || newDescription !== undefined) {
+        if (isTaskCreation) {
+            let newTask = { ...props.task };
+            newTask.title = newTitle!;
+            newTask.description = newDescription ?? undefined;
+            newTask = await taskController.createTask(newTask);
+            tasksStore.addTask(newTask);
+            if (props.onNewTaskUpdate) {
+                props.onNewTaskUpdate(newTask);
+            }
         }
-    };
-
-    const confirmEdition = async ()=>{
-        let newTitle = title.value !== props.task.title ? title.value : undefined;
-        let newDescription:string|null|undefined = undefined;
-        if (description.value !== props.task.description) {
-            newDescription = description.value && description.value.length > 0 ? description.value : null;
+        else {
+            const newTask = await taskController.editTask(props.task, newTitle, newDescription);
+            tasksStore.updateTask(newTask);
         }
+    }
+    editMode.value = false;
+};
 
-        if (isTaskCreation && (!newTitle || newTitle.length === 0)) {
-            toastMessageStore.addToastMessage("The task title is required", ToastMessageType.alert);
+const onClickDeleteButton = async ()=>{
+    showDeletionConfirmationDialog.value = true;
+};
+
+const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
+    if (confirmation) {
+        try {
+            await taskController.deleteTask(props.task);
+            tasksStore.removeTask(props.task);
+        }
+        catch (e) {
+            toastMessageStore.addToastMessage("An error occured during task deletion", ToastMessageType.error);
+            console.error("An error occured during task deletion", e);
             return;
         }
-
-        if (newTitle || newDescription !== undefined) {
-            if (isTaskCreation) {
-                let newTask = {...props.task};
-                newTask.title = newTitle!;
-                newTask.description = newDescription ?? undefined;
-                newTask = await taskController.createTask(newTask);
-                tasksStore.addTask(newTask);
-                if (props.onNewTaskUpdate) {
-                    props.onNewTaskUpdate(newTask);
-                }
-            } else {
-                const newTask = await taskController.editTask(props.task, newTitle, newDescription);
-                tasksStore.updateTask(newTask);
-            }
-        }
-        editMode.value = false;
-    };
-
-    const onClickDeleteButton = async ()=>{
-        showDeletionConfirmationDialog.value = true;
     }
-
-    const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
-        if (confirmation) {
-            try {
-                await taskController.deleteTask(props.task);
-                tasksStore.removeTask(props.task);
-            } catch(e) {
-                toastMessageStore.addToastMessage("An error occured during task deletion", ToastMessageType.error);
-                console.error("An error occured during task deletion", e);
-                return;
-            }
-        }
-        showDeletionConfirmationDialog.value = false;
-    }
+    showDeletionConfirmationDialog.value = false;
+};
 </script>
 
 <template>
-    <div class="task-row" :class="{ edit: editMode }">    
+    <div
+        class="task-row"
+        :class="{ edit: editMode }"
+    >
         <template v-if="editMode">
             <div class="task-row__edit-indicator">
-                <IconButton label="editModeActive" :nonInteractable="true">
-                    <FontAwesomeIcon :icon="faPenToSquare"/>
+                <IconButton
+                    label="editModeActive"
+                    :non-interactable="true"
+                >
+                    <FontAwesomeIcon :icon="faPenToSquare" />
                 </IconButton>
             </div>
             <div class="task-row__title">
-                <input type="text" required v-model="title" placeholder="Task title">
+                <input
+                    v-model="title"
+                    type="text"
+                    required
+                    placeholder="Task title"
+                >
             </div>
             <div class="task-row__description">
-                <textarea type="text" v-model="description" placeholder="Task description"></textarea>
+                <textarea
+                    v-model="description"
+                    type="text"
+                    placeholder="Task description"
+                />
             </div>
             <div class="task-row__buttons">
-                <BaseButton label="Cancel" :color="Color.red" @click="cancelEdition">
-                    <FontAwesomeIcon :icon="faArrowRotateLeft"/>
+                <BaseButton
+                    label="Cancel"
+                    :color="Color.red"
+                    @click="cancelEdition"
+                >
+                    <FontAwesomeIcon :icon="faArrowRotateLeft" />
                 </BaseButton>
-                <BaseButton label="Confirm" :color="Color.green" @click="confirmEdition">
-                    <FontAwesomeIcon :icon="faCheck"/>
+                <BaseButton
+                    label="Confirm"
+                    :color="Color.green"
+                    @click="confirmEdition"
+                >
+                    <FontAwesomeIcon :icon="faCheck" />
                 </BaseButton>
             </div>
         </template>
         <template v-else>
             <div class="task-row__checkbox">
-                <input type="checkbox" :checked="props.task.completed" @change="(e:Event)=>onChangeTaskCheckbox((e.target as HTMLInputElement).checked)">
+                <input
+                    type="checkbox"
+                    :checked="props.task.completed"
+                    @change="(e:Event) => onChangeTaskCheckbox((e.target as HTMLInputElement).checked)"
+                >
             </div>
             <div class="task-row__title">
                 <span>{{ task.title }}</span>
@@ -127,19 +155,26 @@ import { ToastMessageType } from "~/types/ToastMessage";
                 <span>{{ task.description ?? "No description" }}</span>
             </div>
             <div class="task-row__buttons">
-                <BaseButton label="Edit task" @click="activeEditMode">
-                    <FontAwesomeIcon :icon="faPenToSquare"/>
+                <BaseButton
+                    label="Edit task"
+                    @click="activeEditMode"
+                >
+                    <FontAwesomeIcon :icon="faPenToSquare" />
                 </BaseButton>
-                <BaseButton label="Delete task" :color="Color.red" @click="onClickDeleteButton">
-                    <FontAwesomeIcon :icon="faTrashCan"/>
+                <BaseButton
+                    label="Delete task"
+                    :color="Color.red"
+                    @click="onClickDeleteButton"
+                >
+                    <FontAwesomeIcon :icon="faTrashCan" />
                 </BaseButton>
             </div>
         </template>
         <ConfirmationDialog
             title="Delete task"
-            :confirmationText="'Do you really wish to delete the task &quot;' + props.task.title + '&quot; ?'"
+            :confirmation-text="'Do you really wish to delete the task &quot;' + props.task.title + '&quot; ?'"
             :open="showDeletionConfirmationDialog"
-            :onButtonClick="onButtonClickDeleteConfirmationDialog"
+            :on-button-click="onButtonClickDeleteConfirmationDialog"
         />
     </div>
 </template>
@@ -150,7 +185,7 @@ import { ToastMessageType } from "~/types/ToastMessage";
         grid-template-columns: min-content 1fr min-content;
         column-gap: 0.5rem;
     }
-    
+
     .task-row__checkbox, .task-row__edit-indicator {
         grid-column: 1;
         grid-row: span 2;

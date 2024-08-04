@@ -6,7 +6,7 @@ export enum ToastMessageType {
 }
 
 export interface ToastMessage {
-    text:string,
-    type:ToastMessageType,
-    timeout?:number,
+    text:string
+    type:ToastMessageType
+    timeout?:number
 }

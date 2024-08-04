@@ -1,44 +1,61 @@
 <script setup lang="ts">
-    import { faArrowRotateLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRotateLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-    import Color from "~/types/Color.js";
-    const props = defineProps<{
-        title:string,
-        confirmationText:string,
-        open:boolean,
-        onButtonClick:(confirmation:boolean)=>void,
-    }>();
+import Color from "~/types/Color.js";
 
-    const confirmationDialog = ref<HTMLDialogElement>();
+const props = defineProps<{
+    title:string
+    confirmationText:string
+    open:boolean
+    onButtonClick:(confirmation:boolean)=>void
+}>();
 
-    watchEffect(()=>{
-        if (!confirmationDialog.value) {
-            return;
-        }
+const confirmationDialog = ref<HTMLDialogElement>();
 
-        if (props.open) {
-            confirmationDialog.value.showModal();
-        } else {
-            confirmationDialog.value.close();
-        }
-    });
-
-    const onButtonClickLocal = async (confirmation:boolean)=>{
-        props.onButtonClick(confirmation);
+watchEffect(()=>{
+    if (!confirmationDialog.value) {
+        return;
     }
+
+    if (props.open) {
+        confirmationDialog.value.showModal();
+    }
+    else {
+        confirmationDialog.value.close();
+    }
+});
+
+const onButtonClickLocal = async (confirmation:boolean)=>{
+    props.onButtonClick(confirmation);
+};
 </script>
 
 <template>
-    <dialog class="confirmation-dialog" ref="confirmationDialog">
+    <dialog
+        ref="confirmationDialog"
+        class="confirmation-dialog"
+    >
         <div class="confirmation-dialog__content">
-            <h2 class="confirmation-dialog__title">{{props.title}}</h2>
+            <h2 class="confirmation-dialog__title">
+                {{ props.title }}
+            </h2>
             <span>{{ props.confirmationText }}</span>
             <div class="confirmation-dialog__buttons">
-                <BaseButton label="Cancel" :color="Color.red" :showLabel="true" @click="()=>onButtonClickLocal(false)">
-                    <FontAwesomeIcon :icon="faArrowRotateLeft"/>
+                <BaseButton
+                    label="Cancel"
+                    :color="Color.red"
+                    :show-label="true"
+                    @click="() => onButtonClickLocal(false)"
+                >
+                    <FontAwesomeIcon :icon="faArrowRotateLeft" />
                 </BaseButton>
-                <BaseButton label="Confirm" :color="Color.green" :showLabel="true" @click="()=>onButtonClickLocal(true)">
-                    <FontAwesomeIcon :icon="faCheck"/>
+                <BaseButton
+                    label="Confirm"
+                    :color="Color.green"
+                    :show-label="true"
+                    @click="() => onButtonClickLocal(true)"
+                >
+                    <FontAwesomeIcon :icon="faCheck" />
                 </BaseButton>
             </div>
         </div>
