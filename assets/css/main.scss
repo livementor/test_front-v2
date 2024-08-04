@@ -3,6 +3,18 @@
     --base-green: lightgreen;
     --base-yellow: goldenrod;
     --base-red: lightcoral;
+    --color-background: #f8f7fa;
+    --color-background-sup: #f3f2f7;
+}
+
+html {
+    background: 
+        linear-gradient(to top right, transparent, var(--color-background) 90%),
+        linear-gradient(45deg, transparent 49%, var(--color-background-sup) 49% 51%, transparent 51%) , 
+        linear-gradient(-45deg, transparent 49%, var(--color-background-sup) 49% 51%, transparent 51%)
+        ;
+    background-size: 15rem 15rem;
+    background-color: var(--color-background);
 }
 
 .background-color-interactive {

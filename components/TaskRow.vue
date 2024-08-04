@@ -21,13 +21,18 @@ const toastMessageStore = useToastMessagesStore();
 const isTaskCreation = props.task.id === -1;
 
 const editMode = ref(isTaskCreation);
+const showLoader = ref(false);
+const isCompleted = ref(props.task.completed);
 const title = ref(props.task.title);
 const description = ref(props.task.description);
 const showDeletionConfirmationDialog = ref(false);
 
 const onChangeTaskCheckbox = async (checked:boolean)=>{
+    showLoader.value = true;
     const updatedTask = await taskController.toggleTaskCompletion(props.task, checked);
+    isCompleted.value = checked;
     tasksStore.updateTask(updatedTask);
+    showLoader.value = false;
 };
 
 const activeEditMode = ()=>{
@@ -55,6 +60,7 @@ const confirmEdition = async ()=>{
         return;
     }
 
+    showLoader.value = true;
     if (newTitle || newDescription !== undefined) {
         if (isTaskCreation) {
             let newTask = { ...props.task };
@@ -71,6 +77,7 @@ const confirmEdition = async ()=>{
             tasksStore.updateTask(newTask);
         }
     }
+    showLoader.value = false;
     editMode.value = false;
 };
 
@@ -79,8 +86,10 @@ const onClickDeleteButton = async ()=>{
 };
 
 const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
+    showDeletionConfirmationDialog.value = false;
     if (confirmation) {
         try {
+            showLoader.value = true;
             await taskController.deleteTask(props.task);
             tasksStore.removeTask(props.task);
         }
@@ -89,101 +98,115 @@ const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
             console.error("An error occured during task deletion", e);
             return;
         }
+        showLoader.value = false;
     }
-    showDeletionConfirmationDialog.value = false;
 };
+
+const classObject = reactive({
+    "task-row--edit": editMode, 
+    "task-row--completed": isCompleted,
+});
 </script>
 
 <template>
-    <div
-        class="task-row"
-        :class="{ edit: editMode }"
-    >
-        <template v-if="editMode">
-            <div class="task-row__edit-indicator">
-                <IconButton
-                    label="editModeActive"
-                    :non-interactable="true"
-                >
-                    <FontAwesomeIcon :icon="faPenToSquare" />
-                </IconButton>
-            </div>
-            <div class="task-row__title">
-                <input
-                    v-model="title"
-                    type="text"
-                    required
-                    placeholder="Task title"
-                >
-            </div>
-            <div class="task-row__description">
-                <textarea
-                    v-model="description"
-                    type="text"
-                    placeholder="Task description"
-                />
-            </div>
-            <div class="task-row__buttons">
-                <BaseButton
-                    label="Cancel"
-                    :color="Color.red"
-                    @click="cancelEdition"
-                >
-                    <FontAwesomeIcon :icon="faArrowRotateLeft" />
-                </BaseButton>
-                <BaseButton
-                    label="Confirm"
-                    :color="Color.green"
-                    @click="confirmEdition"
-                >
-                    <FontAwesomeIcon :icon="faCheck" />
-                </BaseButton>
-            </div>
-        </template>
-        <template v-else>
-            <div class="task-row__checkbox">
-                <input
-                    type="checkbox"
-                    :checked="props.task.completed"
-                    @change="(e:Event) => onChangeTaskCheckbox((e.target as HTMLInputElement).checked)"
-                >
-            </div>
-            <div class="task-row__title">
-                <span>{{ task.title }}</span>
-            </div>
-            <div class="task-row__description">
-                <span>{{ task.description ?? "No description" }}</span>
-            </div>
-            <div class="task-row__buttons">
-                <BaseButton
-                    label="Edit task"
-                    @click="activeEditMode"
-                >
-                    <FontAwesomeIcon :icon="faPenToSquare" />
-                </BaseButton>
-                <BaseButton
-                    label="Delete task"
-                    :color="Color.red"
-                    @click="onClickDeleteButton"
-                >
-                    <FontAwesomeIcon :icon="faTrashCan" />
-                </BaseButton>
-            </div>
-        </template>
-        <ConfirmationDialog
-            title="Delete task"
-            :confirmation-text="'Do you really wish to delete the task &quot;' + props.task.title + '&quot; ?'"
-            :open="showDeletionConfirmationDialog"
-            :on-button-click="onButtonClickDeleteConfirmationDialog"
-        />
-    </div>
+    <BaseCard>
+        <div
+            class="task-row"
+            :class="classObject"
+        >
+            <div class="task-row__loader" v-if="showLoader"></div>
+            <template v-if="editMode">
+                <div class="task-row__edit-indicator">
+                    <IconButton
+                        label="editModeActive"
+                        :non-interactable="true"
+                    >
+                        <FontAwesomeIcon :icon="faPenToSquare" />
+                    </IconButton>
+                </div>
+                <div class="task-row__title">
+                    <input
+                        v-model="title"
+                        type="text"
+                        required
+                        placeholder="Task title"
+                    >
+                </div>
+                <div class="task-row__description">
+                    <textarea
+                        v-model="description"
+                        type="text"
+                        placeholder="Task description"
+                    ></textarea>
+                </div>
+                <div class="task-row__buttons">
+                    <BaseButton
+                        label="Cancel"
+                        :color="Color.red"
+                        @click="cancelEdition"
+                    >
+                        <FontAwesomeIcon :icon="faArrowRotateLeft" />
+                    </BaseButton>
+                    <BaseButton
+                        label="Confirm"
+                        :color="Color.green"
+                        @click="confirmEdition"
+                    >
+                        <FontAwesomeIcon :icon="faCheck" />
+                    </BaseButton>
+                </div>
+            </template>
+            <template v-else>
+                <div class="task-row__checkbox">
+                    <input
+                        type="checkbox"
+                        :checked="isCompleted"
+                        @change="(e:Event) => onChangeTaskCheckbox((e.target as HTMLInputElement).checked)"
+                    >
+                </div>
+                <div class="task-row__title">
+                    <span>{{ task.title }}</span>
+                </div>
+                <div class="task-row__description">
+                    <span>{{ task.description ?? "No description" }}</span>
+                </div>
+                <div class="task-row__buttons">
+                    <BaseButton
+                        label="Edit task"
+                        @click="activeEditMode"
+                    >
+                        <FontAwesomeIcon :icon="faPenToSquare" />
+                    </BaseButton>
+                    <BaseButton
+                        label="Delete task"
+                        :color="Color.red"
+                        @click="onClickDeleteButton"
+                    >
+                        <FontAwesomeIcon :icon="faTrashCan" />
+                    </BaseButton>
+                </div>
+            </template>
+            <ConfirmationDialog
+                title="Delete task"
+                :confirmation-text="'Do you really wish to delete the task &quot;' + props.task.title + '&quot; ?'"
+                :open="showDeletionConfirmationDialog"
+                :on-button-click="onButtonClickDeleteConfirmationDialog"
+            />
+        </div>
+    </BaseCard>
 </template>
 
 <style scoped lang="scss">
     .task-row {
+        position: relative;
         display: grid;
         grid-template-columns: min-content 1fr min-content;
         column-gap: 0.5rem;
+        overflow: hidden;
+    }
+
+    .task-row--completed {
+        text-decoration: line-through;
     }
 
     .task-row__checkbox, .task-row__edit-indicator {
@@ -228,10 +251,50 @@ const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
         gap: 0.5rem;
     }
 
-    .task-row.edit {
+    .task-row--edit {
         & .task-row__checkbox {
             opacity: 0;
             pointer-events: none;
+        }
+    }
+
+    .task-row__loader {
+        position: absolute;
+        background: rgba(255,255,255,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        animation: task-row-loader-anim 1s linear forwards;
+
+        &::before {
+            display: block;
+            content: "";
+            height: 2rem;
+            width: 2rem;
+            border: 0.5rem solid var(--base-interactive);
+            border-top-color: transparent;
+            animation: task-row-loader-before-anim 2.5s linear infinite;
+            border-radius: 100%;
+        }
+    }
+
+    @keyframes task-row-loader-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes task-row-loader-before-anim {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
         }
     }
 </style>

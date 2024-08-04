@@ -4,6 +4,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import BaseButton from "./BaseButton.vue";
 import TaskRow from "./TaskRow.vue";
 import type { Task } from "~/types/Task";
+import BaseCard from "./BaseCard.vue";
 
 const tasksStore = useTasksStore();
 const api = useApi();
@@ -29,18 +30,22 @@ const onNewTaskButtonClick = ()=>{
     newTask.value = newT;
 };
 
-const onNewTaskUpdate = ()=>{
+const onNewTaskUpdate = (task:Task|false)=>{
     newTask.value = null;
-    document.querySelector("html")?.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-    });
+    if (task) {
+        document.querySelector("html")?.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+        });
+    }
 };
 </script>
 
 <template>
     <div class="task-list">
-        <h1>Tasks list</h1>
+        <BaseCard>
+            <h1 class="task-list__title">LiveMentor - My tasks</h1>
+        </BaseCard>
         <BaseButton
             v-if="newTask === null"
             class="task-list__new-button"
@@ -51,6 +56,7 @@ const onNewTaskUpdate = ()=>{
             <FontAwesomeIcon :icon="faPlus" />
         </BaseButton>
         <TaskRow
+            class="task-row--new-task"
             v-if="newTask"
             :task="newTask"
             :on-new-task-update="onNewTaskUpdate"
@@ -66,8 +72,18 @@ const onNewTaskUpdate = ()=>{
 </template>
 
 <style scoped>
+    .task-list__title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
     .task-list__new-button {
-        margin: auto;
+        margin: 1rem auto;
+    }
+
+    .task-row--new-task {
+        margin: 0.5rem 0;
     }
 
     .task-list__rows {
