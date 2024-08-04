@@ -23,7 +23,7 @@ const classObject = reactive({
         :class="classObject"
         :style="{ '--color': color }"
     >
-        <slot></slot>
+        <slot />
         <span v-if="label && showLabel">{{ label }}</span>
     </button>
 </template>

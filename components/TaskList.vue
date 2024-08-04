@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import BaseButton from "./BaseButton.vue";
 import TaskRow from "./TaskRow.vue";
-import type { Task } from "~/types/Task";
 import BaseCard from "./BaseCard.vue";
+import type { Task } from "~/types/Task";
 
 const tasksStore = useTasksStore();
 const api = useApi();
@@ -30,7 +30,7 @@ const onNewTaskButtonClick = ()=>{
     newTask.value = newT;
 };
 
-const onNewTaskUpdate = (task:Task|false)=>{
+const onNewTaskUpdate = (task:Task | false)=>{
     newTask.value = null;
     if (task) {
         document.querySelector("html")?.scrollTo({
@@ -44,7 +44,9 @@ const onNewTaskUpdate = (task:Task|false)=>{
 <template>
     <div class="task-list">
         <BaseCard>
-            <h1 class="task-list__title">LiveMentor - My tasks</h1>
+            <h1 class="task-list__title">
+                LiveMentor - My tasks
+            </h1>
         </BaseCard>
         <BaseButton
             v-if="newTask === null"
@@ -56,8 +58,8 @@ const onNewTaskUpdate = (task:Task|false)=>{
             <FontAwesomeIcon :icon="faPlus" />
         </BaseButton>
         <TaskRow
-            class="task-row--new-task"
             v-if="newTask"
+            class="task-row--new-task"
             :task="newTask"
             :on-new-task-update="onNewTaskUpdate"
         />

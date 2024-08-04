@@ -103,7 +103,7 @@ const onButtonClickDeleteConfirmationDialog = async (confirmation:boolean)=>{
 };
 
 const classObject = reactive({
-    "task-row--edit": editMode, 
+    "task-row--edit": editMode,
     "task-row--completed": isCompleted,
 });
 </script>
@@ -114,7 +114,10 @@ const classObject = reactive({
             class="task-row"
             :class="classObject"
         >
-            <div class="task-row__loader" v-if="showLoader"></div>
+            <div
+                v-if="showLoader"
+                class="task-row__loader"
+            ></div>
             <template v-if="editMode">
                 <div class="task-row__edit-indicator">
                     <IconButton
