@@ -1,10 +1,11 @@
 <template>
-  <div class="max-w-screen-md mx-auto p-5">
-    <div class="text-3xl font-bold mb-3">
-      Todo List
-    </div>
+  <div class="max-w-screen-md mx-auto p-5 flex justify-between items-center flex-wrap">
+    <Header class="w-full"/>
+    <TaskList />
   </div>
 </template>
 
 <script setup lang="ts">
+const store = useTasksStore()
+await store.init() // permet d'initier les données en début de session
 </script>
