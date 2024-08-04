@@ -1,0 +1,25 @@
+:root {
+    --base-interactive: darkcyan;
+    --base-green: lightgreen;
+    --base-yellow: goldenrod;
+    --base-red: lightcoral;
+}
+
+.background-color-interactive {
+    background-color: var(--base-interactive);
+}
+.background-color-green {
+    background-color: var(--base-green);
+}
+.background-color-yellow {
+    background-color: var(--base-yellow);
+}
+.background-color-red {
+    background-color: var(--base-red);
+}
+
+input[type="text"], textarea {
+    border: 0.1rem solid darkslategrey;
+    border-radius: 0.3rem;
+    padding: 0rem 0.5rem;
+}
