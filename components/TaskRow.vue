@@ -120,12 +120,12 @@ const classObject = reactive({
             ></div>
             <template v-if="editMode">
                 <div class="task-row__edit-indicator">
-                    <IconButton
+                    <BaseButton
                         label="editModeActive"
                         :non-interactable="true"
                     >
                         <FontAwesomeIcon :icon="faPenToSquare" />
-                    </IconButton>
+                    </BaseButton>
                 </div>
                 <div class="task-row__title">
                     <input
