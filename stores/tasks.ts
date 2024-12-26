@@ -16,7 +16,7 @@ export const useTasksStore = defineStore('tasks', {
       this.create = true
     },
     hideCreate() {
-      this.create = true
+      this.create = false
       this.item = null
     },
 
@@ -25,7 +25,7 @@ export const useTasksStore = defineStore('tasks', {
       this.update = true
     },
     hideUpdate() {
-      this.update = true
+      this.update = false
       this.item = null
     },
 
@@ -34,12 +34,12 @@ export const useTasksStore = defineStore('tasks', {
       this.delete = true
     },
     hideDelete() {
-      this.delete = true
+      this.delete = false
       this.item = null
     },
 
     refetch() {
-      return this.refetchTrigger++
+      this.refetchTrigger++
     },
   },
 })

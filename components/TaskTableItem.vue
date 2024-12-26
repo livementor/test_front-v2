@@ -1,7 +1,7 @@
 <template>
   <tr class="hover:bg-gray-50">
     <td class="border border-gray-300 px-4 py-2"> {{ task.title }}</td>
-    <td class="border border-gray-300 px-4 py-2">{{ description }}</td>
+    <td class="border border-gray-300 px-4 py-2">{{ task.description }}</td>
     <td class="border border-gray-300 px-4 py-2 text-center">
       <button class="text-green-500 hover:text-green-700 px-2" @click="completeAction">Complete</button>
       <button class="text-blue-500 hover:text-blue-700 px-2" @click="showUpdateAction">Edit</button>

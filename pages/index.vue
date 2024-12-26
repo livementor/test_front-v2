@@ -4,6 +4,7 @@
       Todo List
     </div>
     <TaskTable :tasks="tasks" :isLoading="isLoading" />
+    <TaskModalUpdate />
   </div>
 </template>
 
