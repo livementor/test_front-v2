@@ -1,14 +1,16 @@
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">
-      Task Table
-    </h1>
     <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4" @click="refetch">
       Refresh
     </button>
     <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 ml-2" @click="showCreate">
       Create
     </button>
+    <div>
+      <p>
+        {{ activeTasks }} active tasks remaining
+      </p>
+    </div>
     <table class="table-auto w-full border-collapse border border-gray-300">
       <thead>
         <tr class="bg-gray-100">
@@ -46,6 +48,13 @@ const props = defineProps<{
   tasks: Task[]
   isLoading: boolean
 }>()
+
+const activeTasks = computed(() => {
+  return props.tasks.reduce(
+  (result, item) => !item.completed ? result + 1 : result,
+  0,
+)
+})
 
 const { refetch, showCreate } = useTasksStore()
 </script>
