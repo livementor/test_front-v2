@@ -25,7 +25,12 @@ const fetchAll = () => {
   isLoading.value = true
   taskRequests.getAll().then((tasks) => {
     isLoading.value = false
-    tasksRef.value = tasks.sort((a, b) => a.completed ? 1 : -1)
+    tasksRef.value = tasks.sort((a, b) => {
+      if (b.completed > a.completed) { 
+        return -1
+      }
+      return a.createdAt - b.createdAt
+    })
   })
 }
 
