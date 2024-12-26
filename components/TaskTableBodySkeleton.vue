@@ -8,6 +8,9 @@
     <td class="border border-gray-300 px-4 py-2 w-auto">
       <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
     </td>
+    <td class="border border-gray-300 px-4 py-2 w-auto">
+      <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+    </td>
     <td class="border border-gray-300 px-4 py-2 text-center">
       <button class="text-green-500 hover:text-green-700 px-2" @click="completeAction">
         Complete

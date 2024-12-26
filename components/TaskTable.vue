@@ -30,11 +30,9 @@
       </thead>
       <tbody>
         <TaskTableBodySkeleton v-if="props.isLoading" />
-
         <template v-else>
           <TaskTableItem v-for="task in props.tasks" :key="task.id" :task="task" />
         </template>
-
       </tbody>
     </table>
   </div>
