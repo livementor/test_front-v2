@@ -5,6 +5,7 @@
     </div>
     <TaskTable :tasks="tasks" :isLoading="isLoading" />
     <TaskModalUpdate />
+    <TaskModalCreate />
   </div>
 </template>
 
