@@ -6,6 +6,7 @@
     <TaskTable :tasks="tasks" :isLoading="isLoading" />
     <TaskModalUpdate />
     <TaskModalCreate />
+    <TaskModalDelete />
   </div>
 </template>
 
