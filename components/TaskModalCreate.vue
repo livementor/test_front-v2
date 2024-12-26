@@ -50,7 +50,9 @@
   
   <script lang="ts" setup name="TaskModalCreate">
   import { useTasksStore } from '~/stores/tasks'
-  
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+
   const state = useTasksStore()
   const { task: taskRequests } = useApi()
   
@@ -59,9 +61,13 @@
   
   const submitForm = () => {
     taskRequests.post({ title: title.value, description: description.value, completed: false }).then((task) => {
-      // Success toast
+      toast.success("New task created successfully", {
+        autoClose: 3000,
+      });
     }).catch(() => {
-      // error toast
+      toast.error("An error occured, task not created", {
+        autoClose: 3000,
+      });
     }).finally(() => {
       state.hideCreate()
       state.refetch()

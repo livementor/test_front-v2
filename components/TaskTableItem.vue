@@ -18,22 +18,27 @@
 <script setup lang="ts" name="TaskItem">
 import type { Task } from '~/types/Task'
 import { useTasksStore } from '~/stores/tasks'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const props = defineProps<{
   task: Task
 }>()
 
-const { showUpdate, showDelete } = useTasksStore()
+const { showUpdate, showDelete, refetch } = useTasksStore()
 const { task: taskRequests } = useApi()
 
 const completeAction = () => {
   taskRequests.put({ id: props.task.id, completed: true }).then(() => {
-    // Success toast
+    toast.success("Task completed successfully", {
+      autoClose: 3000,
+    });
   }).catch(() => {
-    // error toast
+    toast.error("An error occured, task not completed", {
+      autoClose: 3000,
+    });
   }).finally(() => {
-    state.hideUpdate()
-    state.refetch()
+    refetch()
   })
 }
 

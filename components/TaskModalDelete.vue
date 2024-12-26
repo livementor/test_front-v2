@@ -29,15 +29,21 @@
 
 <script lang="ts" setup name="TaskModalDelete">
 import { useTasksStore } from '~/stores/tasks'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const state = useTasksStore()
 const { task: taskRequests } = useApi()
 
 const submitForm = () => {
   taskRequests.delete(state.item.id).then((task) => {
-    // Success toast
+    toast.success("New task deleted successfully", {
+        autoClose: 3000,
+      });
   }).catch(() => {
-    // error toast
+    toast.error("An error occured, task not deleted", {
+      autoClose: 3000,
+    });
   }).finally(() => {
     state.hideDelete()
     state.refetch()
