@@ -2,10 +2,15 @@
   <tr class="hover:bg-gray-50">
     <td class="border border-gray-300 px-4 py-2"> {{ task.title }}</td>
     <td class="border border-gray-300 px-4 py-2">{{ task.description }}</td>
+    <td class="border border-gray-300 px-4 py-2 ">
+      <div class="content-center"> 
+        <Icon size="2em" v-if="task.completed" name="uil:check-circle" class="text-green-500"  />
+      </div>
+    </td>
     <td class="border border-gray-300 px-4 py-2 text-center">
-      <button class="text-green-500 hover:text-green-700 px-2" @click="completeAction">Complete</button>
-      <button class="text-blue-500 hover:text-blue-700 px-2" @click="showUpdateAction">Edit</button>
-      <button class="text-red-500 hover:text-red-700 px-2" @click="showDeleteAction">Delete</button>
+      <button class="text-green-500 hover:text-green-700 px-2" v-if="!task.completed" @click="completeAction">Complete</button>
+      <button class="text-blue-500 hover:text-blue-700 px-2" v-if="!task.completed" @click="showUpdateAction">Edit</button>
+      <button class="text-red-500 hover:text-red-700 px-2"  @click="showDeleteAction">Delete</button>
     </td>
   </tr>
 </template>
@@ -19,8 +24,18 @@ const props = defineProps<{
 }>()
 
 const { showUpdate, showDelete } = useTasksStore()
+const { task: taskRequests } = useApi()
 
-const completeAction = () => { }
+const completeAction = () => {
+  taskRequests.put({ id: props.task.id, completed: true }).then(() => {
+    // Success toast
+  }).catch(() => {
+    // error toast
+  }).finally(() => {
+    state.hideUpdate()
+    state.refetch()
+  })
+}
 
 const showUpdateAction = () => {
   showUpdate(props.task)

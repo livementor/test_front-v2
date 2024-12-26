@@ -18,6 +18,9 @@
           <th class="border border-gray-300 px-4 py-2 text-left">
             Description
           </th>
+          <th class="border border-gray-300 px-4 py-2 text-left">
+            Status
+          </th>
           <th class="border border-gray-300 px-4 py-2 text-center">
             Actions
           </th>
