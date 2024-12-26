@@ -8,7 +8,10 @@
 </template>
 
 <script setup lang="ts">
+import { useTasksStore } from '~/stores/tasks'
+
 const { task: taskRequests } = useApi()
+const state = useTasksStore()
 
 const tasksRef = ref<Array<Task>>([])
 
@@ -22,6 +25,10 @@ const fetchAll = () => {
     tasksRef.value = tasks
   })
 }
+
+watch(() => state.refetchTrigger, (newX) => {
+  fetchAll()
+})
 
 onMounted(() => {
   fetchAll()

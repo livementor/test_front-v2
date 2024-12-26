@@ -6,17 +6,11 @@ type State = {
   create: boolean
   update: boolean
   delete: boolean
-  refetch: number
+  refetchTrigger: number
 }
 
 export const useTasksStore = defineStore('tasks', {
-  state: (): State => ({ create: false, update: false, delete: false, item: null, refetch: 0 }),
-  getters: {
-    item: state => state.item,
-    create: state => state.create,
-    update: state => state.update,
-    delete: state => state.delete,
-  },
+  state: (): State => ({ create: false, update: false, delete: false, item: null, refetchTrigger: 0 }),
   actions: {
     showCreate() {
       this.create = true
@@ -45,7 +39,7 @@ export const useTasksStore = defineStore('tasks', {
     },
 
     refetch() {
-      this.refetch++
+      return this.refetchTrigger++
     },
   },
 })
