@@ -1,3 +1,5 @@
+import type { Priority } from '~/types/Filters'
+
 export interface Task {
   id: number
   title: string
@@ -5,4 +7,5 @@ export interface Task {
   completed: boolean
   createdAt: Date
   categories: number[]
+  priority: Priority
 }

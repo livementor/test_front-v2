@@ -20,5 +20,13 @@ export const useApi = () => {
         return $fetch<Task[]>('/api/tasks', { method: 'GET' })
       },
     },
+    debug: {
+      post: () => {
+        return $fetch('/api/debug', { method: 'POST' })
+      },
+      delete: () => {
+        return $fetch('/api/debug', { method: 'DELETE' })
+      },
+    },
   }
 }

@@ -1,10 +1,19 @@
-<template>
-  <div class="max-w-screen-md mx-auto p-5">
-    <div class="text-3xl font-bold mb-3">
-      Todo List
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
+import { MkrApp } from '@livementor/mikado_reborn/src/components/App'
+import TodoList from '~/components/_tasks/TodoList.vue'
+
+const taskStore = useTasksStore()
+await taskStore.init()
 </script>
+
+<template>
+  <mkr-app>
+    <div class="p-8">
+      <nav-bar />
+
+      <todo-list />
+
+      <debug-bar />
+    </div>
+  </mkr-app>
+</template>
