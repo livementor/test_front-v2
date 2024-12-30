@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { MkrBadge } from '@livementor/mikado_reborn/src/components/Badge'
 import { Priority } from '~/types/Filters'
 
 defineProps({
