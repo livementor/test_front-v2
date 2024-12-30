@@ -8,7 +8,7 @@ defineProps({
     type: String,
     default: 'black',
   },
-  background: {
+  backgroundColor: {
     type: String,
     default: 'rgba(0, 0, 0, 0.1)',
   },
@@ -18,7 +18,7 @@ defineProps({
 <template>
   <span
     class="bg-black/5 rounded-full py-2 px-5 text-xl font-bold align-middle"
-    :style="{ color: color, backgroundColor: background }"
+    :style="{ color: color, backgroundColor: backgroundColor }"
   >
     {{ label }}
   </span>

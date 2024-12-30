@@ -11,26 +11,26 @@ defineProps({
 
 <template>
   <template v-if="priority === Priority.Low">
-    <badge
+    <ui-badge
       label="Basse"
       color="rgb(4, 78, 64)"
-      background="rgb(255, 215, 122)"
+      background-color="rgb(255, 215, 122)"
     />
   </template>
 
   <template v-if="priority === Priority.Medium">
-    <badge
+    <ui-badge
       label="Normal"
       color="white"
-      background="rgb(0, 119, 98)"
+      background-color="rgb(0, 119, 98)"
     />
   </template>
 
   <template v-if="priority === Priority.High">
-    <badge
+    <ui-badge
       label="Urgent"
       color="rgb(255, 255, 255)"
-      background="rgb(191, 43, 13)"
+      background-color="rgb(191, 43, 13)"
     />
   </template>
 </template>

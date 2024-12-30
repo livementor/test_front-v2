@@ -5,7 +5,7 @@ import type { PropType } from 'vue'
 import type { Task } from '~/types/Task'
 import TaskForm from '~/components/_tasks/TaskForm.vue'
 import TaskPriority from '~/components/_tasks/TaskPriority.vue'
-import Badge from '~/components/Badge.vue'
+import UiBadge from '~/components/UiBadge.vue'
 
 const props = defineProps({
   task: {
@@ -43,7 +43,7 @@ const tasksCategories = computed(() => {
                 v-for="category in tasksCategories"
                 :key="`${task.id}-${category.name}`"
               >
-                <badge
+                <ui-badge
                   :label="category.name"
                   :color="category.color"
                 />
