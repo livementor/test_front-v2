@@ -5,6 +5,7 @@ import type { PropType } from 'vue'
 import type { Task } from '~/types/Task'
 import TaskForm from '~/components/_tasks/TaskForm.vue'
 import TaskPriority from '~/components/_tasks/TaskPriority.vue'
+import Badge from '~/components/Badge.vue'
 
 const props = defineProps({
   task: {
@@ -28,23 +29,24 @@ const tasksCategories = computed(() => {
   <mkr-expansion-panel :default-expanded="false">
     <template #header>
       <div class="flex flex-col md:flex-row align-middle md:items-center justify-between gap-4">
-        <div class="flex flex-col md:flex-row gap-4">
-          <h3 :class="{ 'task-complete': task.completed }">
+        <div class="flex flex-col md:flex-row gap-4 md:items-center">
+          <h3
+            :class="{ 'task-complete': task.completed }"
+            class="text-3xl"
+          >
             {{ task.title }}
           </h3>
 
-          <div class="flex gap-4">
+          <div class="flex items-center gap-4">
             <template v-if="tasksCategories.length">
               <template
                 v-for="category in tasksCategories"
                 :key="`${task.id}-${category.name}`"
               >
-                <span
-                  class="category-badge"
-                  :style="{ color: category.color }"
-                >
-                  {{ category.name }}
-                </span>
+                <badge
+                  :label="category.name"
+                  :color="category.color"
+                />
               </template>
             </template>
 
@@ -54,7 +56,10 @@ const tasksCategories = computed(() => {
 
         <div>
           <div class="flex gap-4">
-            <task-form :task="task" />
+            <task-form
+              :task="task"
+              trigger-size="small"
+            />
             <mkr-outlined-button
               :disabled="task.completed"
               size="small"
@@ -81,12 +86,5 @@ const tasksCategories = computed(() => {
 <style scoped>
 .task-complete {
   text-decoration: line-through;
-}
-.category-badge {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 5rem;
-  padding: 0 10px;
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 </style>

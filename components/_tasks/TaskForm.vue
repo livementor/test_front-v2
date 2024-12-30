@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MkrModal } from '@livementor/mikado_reborn/src/components/Modal'
-import { MkrContainedButton } from '@livementor/mikado_reborn/src/components/Button'
+import { MkrContainedButton, MkrOutlinedButton } from '@livementor/mikado_reborn/src/components/Button'
 import { MkrDropdown } from '@livementor/mikado_reborn/src/components/Dropdown'
 import { MkrTextfield } from '@livementor/mikado_reborn/src/components/Textfield'
 import { MkrTextarea } from '@livementor/mikado_reborn/src/components/Textarea'
@@ -67,7 +67,7 @@ function submitTask() {
         v-model="payloadTask.priority"
         :items="enumToDropdownItems(Priority)"
         placeholder="Priorité"
-        class="w-1/3"
+        class="w-full"
       />
 
       <mkr-contained-button @click="submitTask">
@@ -75,7 +75,7 @@ function submitTask() {
       </mkr-contained-button>
     </div>
   </mkr-modal>
-  <mkr-contained-button
+  <mkr-outlined-button
     theme="neutral"
     :icon="props.task ? 'pencil' : 'plus'"
     :size="props.triggerSize"

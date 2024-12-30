@@ -18,36 +18,36 @@ const sortByDropdownItems = enumToDropdownItems(SortBy)
 </script>
 
 <template>
-  <div class="flex gap-4 mb-8">
-    <div class="flex w-2/3 gap-4">
+  <div class="flex flex-col md:flex-row gap-4 mb-8">
+    <div class="flex flex-col md:flex-row w-full md:w-2/3 gap-4">
       <mkr-dropdown
         v-model="store.filters.status"
         :items="statusDropdownItems"
         placeholder="Tous les statuts"
-        class="w-1/3"
+        class="w-full md:w-1/3"
       />
 
       <mkr-dropdown
         v-model="store.filters.priority"
         :items="priorityDropdownItems"
         placeholder="Toutes les priorités"
-        class="w-1/3"
+        class="w-full md:w-1/3"
       />
 
       <mkr-dropdown
         v-model="store.filters.category"
         :items="categoryDropdownItems"
         placeholder="Toutes les catégories"
-        class="w-1/3"
+        class="w-full md:w-1/3"
       />
     </div>
 
-    <div class="flex w-1/3 gap-4 items-center justify-end">
+    <div class="flex w-full md:w-1/3 gap-4 items-center justify-end">
       <mkr-dropdown
         v-model="store.filters.sortBy"
         :items="sortByDropdownItems"
         placeholder="Trier par :"
-        class="w-1/2"
+        class="w-full md:w-1/2"
       />
       <mkr-icon name="arrow-narrow-bottom" />
     </div>

@@ -12,21 +12,27 @@ defineProps({
 
 <template>
   <template v-if="priority === Priority.Low">
-    <mkr-badge type="primary">
-      Basse
-    </mkr-badge>
+    <badge
+      label="Basse"
+      color="rgb(4, 78, 64)"
+      background="rgb(255, 215, 122)"
+    />
   </template>
 
   <template v-if="priority === Priority.Medium">
-    <mkr-badge type="success">
-      Normal
-    </mkr-badge>
+    <badge
+      label="Normal"
+      color="white"
+      background="rgb(0, 119, 98)"
+    />
   </template>
 
   <template v-if="priority === Priority.High">
-    <mkr-badge type="danger">
-      Urgent
-    </mkr-badge>
+    <badge
+      label="Urgent"
+      color="rgb(255, 255, 255)"
+      background="rgb(191, 43, 13)"
+    />
   </template>
 </template>
 
