@@ -28,7 +28,7 @@
 
             </div>
             <div class="flex gap-x-10 justify-center mt-10">
-                <button class="mt-4 px-4 py-2 bg-primary rounded hover:opacity-90">Créer</button>
+                <button class="mt-4 px-4 py-2 bg-primary rounded hover:opacity-90">Modifier</button>
                 <button @click="emit('closeModal')"
                     class="mt-4 px-4 py-2 bg-danger text-white rounded hover:opacity-90">Fermer</button>
             </div>
@@ -38,7 +38,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ isOpen: boolean }>();
+import type { Task } from "~/types/Task";
+
+const props = defineProps<{ isOpen: boolean, task: Task }>();
 
 const emit = defineEmits<{
     (e: "closeModal"): void;
@@ -47,18 +49,18 @@ const emit = defineEmits<{
 const tasksStore = useTasksStore()
 const categoryStore = useCategoriesStore()
 
-const title = ref<string>("")
-const description = ref<string>("")
-const categories = ref<number[]>([])
+const title = ref<string>(props.task.title)
+const description = ref<string>(props.task.description ?? "")
+const categories = ref<number[]>(props.task.categories)
 
 const handleSubmit = async () => {
     //todo validation (using zod for instance)
     const content = {
         title: title.value,
         description: description.value,
-        categories: categories.value
+        categories: categories.value,
     }
-    await tasksStore.createTask(content)
+    await tasksStore.updateTask(props.task.id, content)
     emit("closeModal")
     //todo catch errors
 }
