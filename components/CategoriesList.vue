@@ -1,5 +1,5 @@
 <template>
-    <div class="border-r border-neutral-light col-start-1 col-span-1 flex flex-col pt-5 px-2 h-full">
+    <div class="border-r border-neutral-light col-start-1 col-span-1 flex flex-col pt-5 px-2 h-full overflow-y-auto">
         <div class="group flex items-center rounded px-2 py-3 hover:bg-primary hover:cursor-pointer" :key="-1"
             @click="() => updateFilter(-1)">
             <div class="w-[5px] h-full bg-primary rounded-sm mr-2 group-hover:hidden"></div>

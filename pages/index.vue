@@ -1,7 +1,5 @@
 <template>
-  <div class="w-full h-full">
-    <ViewTodos />
-  </div>
+  <ViewTodos />
 </template>
 
 <script setup lang="ts">
