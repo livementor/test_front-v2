@@ -1,7 +1,7 @@
 <template>
     <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <form @submit.prevent=handleSubmit class="bg-white p-6 rounded-lg shadow-lg max-w-md min-w-[400px]">
-            <h1 class="text-lg font-bold mb-4">Créer une nouvelle tâche</h1>
+            <h1 class="text-lg font-bold mb-4">Modifier la tâche</h1>
             <div class="flex flex-col w-full gap-y-6">
                 <div class="flex flex-col">
                     <label class="mb-1 text-gray-700 font-medium">Titre</label>
@@ -52,6 +52,12 @@ const categoryStore = useCategoriesStore()
 const title = ref<string>(props.task.title)
 const description = ref<string>(props.task.description ?? "")
 const categories = ref<number[]>(props.task.categories)
+
+watchEffect(() => {
+    title.value = props.task.title;
+    description.value = props.task.description ?? "" ;
+    categories.value = props.task.categories;
+});
 
 const handleSubmit = async () => {
     //todo validation (using zod for instance)
