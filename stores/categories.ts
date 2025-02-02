@@ -37,5 +37,11 @@ export const useCategoriesStore = defineStore("categories", {
       const categories = await get();
       this.categories = categories;
     },
+    getCategoriesFromId(numArray: number[]) {
+      return numArray.map(
+        (c) =>
+          this.categories[this.categories.findIndex((cat) => c == cat.id)]
+      );
+    },
   },
 });

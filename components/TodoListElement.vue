@@ -10,6 +10,13 @@
                 <span :class="{ lineThrough: task.completed }" class="text-sm text-neutral italic">
                     {{ task.description }}
                 </span>
+                <div class="flex w-full flex-wrap gap-x-4 mt-2">
+                    <div v-for="c in getCategoriesFromId(task.categories)" class="flex items-center gap-x-1">
+                        <div class="w-2 h-2 rounded-full ba" :style="{ backgroundColor: c.color }"></div>
+                        <span class="text-sm text-neutral-60"> {{ c.name }}</span>
+
+                    </div>
+                </div>
             </div>
         </div>
         <div class="flex gap-x-4">
@@ -28,6 +35,7 @@ defineProps<{
     task: Task
 }>()
 
+const { getCategoriesFromId } = useCategoriesStore()
 const { deleteTask } = useTasksStore()
 const isEditOpen = ref(false)
 

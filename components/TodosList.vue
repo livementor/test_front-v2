@@ -10,7 +10,7 @@
             <button class="px-10 py-4 bg-primary rounded-lg hover:opacity-90" @click="isOpen = !isOpen">+ Nouvelle
                 tâche</button>
         </div>
-        <div class="my-10 flex flex-col gap-y-4 row-start-2 row-span-2">
+        <div class="mt-10 flex flex-col gap-y-4 row-start-2 row-span-2">
             <TodoListElement v-for="t in taskStore.filteredTasksList" :task="t" />
         </div>
 
