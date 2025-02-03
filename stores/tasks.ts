@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Task } from '~/types/Task'
-import { useApi } from '~/composables/useApi'
+import { useApi } from '~/composables/useApi.composable'
 
 export const useTasksStore = defineStore('tasks', () => {
   const tasks = ref<Task[]>([])
