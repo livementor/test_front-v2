@@ -140,22 +140,23 @@ export default defineNitroPlugin(async () => {
   ])
 
   await storage.setItem('categories', [
-    { id: 1, name: 'Courses', color: 'blue' },
-    { id: 2, name: 'Ménage', color: 'red' },
-    { id: 3, name: 'Organisation', color: 'green' },
-    { id: 4, name: 'Santé', color: 'yellow' },
-    { id: 5, name: 'Lecture', color: 'purple' },
-    { id: 6, name: 'Cuisine', color: 'orange' },
-    { id: 7, name: 'Travail', color: 'pink' },
-    { id: 8, name: 'Fitness', color: 'brown' },
-    { id: 9, name: 'Voyage', color: 'gray' },
-    { id: 10, name: 'Famille', color: 'indigo' },
-    { id: 11, name: 'Social', color: 'cyan' },
-    { id: 12, name: 'Bénévolat', color: 'lime' },
-    { id: 13, name: 'Réparation', color: 'amber' },
-    { id: 14, name: 'Artisanat', color: 'orange' },
-    { id: 15, name: 'Bien-être', color: 'green' },
-    { id: 16, name: 'Loisir', color: 'indigo' },
-    { id: 17, name: 'Réunion', color: 'cyan' },
+    { id: 1, name: 'Courses', color: '#A7C7E7' },
+    { id: 2, name: 'Ménage', color: '#F4A7B9' },
+    { id: 3, name: 'Organisation', color: '#B5EAD7' },
+    { id: 4, name: 'Santé', color: '#FFDDC1' },
+    { id: 5, name: 'Lecture', color: '#C7CEEA' },
+    { id: 6, name: 'Cuisine', color: '#FFD3B6' },
+    { id: 7, name: 'Travail', color: '#D4A5A5' },
+    { id: 8, name: 'Fitness', color: '#A8D5BA' },
+    { id: 9, name: 'Voyage', color: '#E2CFEA' },
+    { id: 10, name: 'Famille', color: '#D5CABD' },
+    { id: 11, name: 'Social', color: '#A1D2CE' },
+    { id: 12, name: 'Bénévolat', color: '#F7C5A8' },
+    { id: 13, name: 'Réparation', color: '#E5E5E5' },
+    { id: 14, name: 'Artisanat', color: '#E6B8A2' },
+    { id: 15, name: 'Bien-être', color: '#CDE6D0' },
+    { id: 16, name: 'Loisir', color: '#D6E9F3' },
+    { id: 17, name: 'Réunion', color: '#F7D8D8' }
   ])
+
 })
