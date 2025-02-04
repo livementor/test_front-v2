@@ -10,6 +10,7 @@ export const useTasksStore = defineStore('tasks', () => {
   const fetchTasks = async () => {
     try {
       tasks.value = await api.tasks.getAll()
+      reorderTasks()
     }
     catch (error) {
       console.error('Error fetching tasks:', error)
@@ -20,6 +21,7 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       const newTask = await api.tasks.create(task)
       tasks.value.unshift(newTask)
+      reorderTasks()
     }
     catch (error) {
       console.error('Error adding task:', error)
@@ -30,6 +32,7 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       const updatedTask = await api.tasks.update(taskId, updates)
       tasks.value = tasks.value.map(task => (task.id === taskId ? updatedTask : task))
+      reorderTasks()
     }
     catch (error) {
       console.error('Error updating task:', error)
@@ -40,11 +43,16 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       await api.tasks.remove(taskId)
       tasks.value = tasks.value.filter(task => task.id !== taskId)
+      reorderTasks()
     }
     catch (error) {
       console.error('Error deleting task:', error)
     }
   }
 
-  return { tasks, fetchTasks, addTask, updateTask, deleteTask }
+  const reorderTasks = () => {
+    tasks.value.sort((a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1)
+  }
+
+  return { tasks, fetchTasks, addTask, updateTask, deleteTask, reorderTasks }
 })
