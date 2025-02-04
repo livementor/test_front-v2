@@ -7,9 +7,14 @@
     </h1>
 
     <div class="bg-white p-4 shadow-lg rounded-lg">
-      <h2 class="text-xl font-semibold text-gray-800 mb-2">Liste des tâches</h2>
-      
-      <section v-if="tasksStore.tasks.length > 0" class="space-y-2">
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">
+        Liste des tâches
+      </h2>
+
+      <section
+        v-if="tasksStore.tasks.length > 0"
+        class="space-y-2"
+      >
         <TaskItem
           v-for="task in tasksStore.tasks"
           :key="task.id"
@@ -18,7 +23,12 @@
           @delete="deleteTask"
         />
       </section>
-      <p v-else class="text-gray-500 text-center">Aucune tâche pour l’instant.</p>
+      <p
+        v-else
+        class="text-gray-500 text-center"
+      >
+        Aucune tâche pour l’instant.
+      </p>
     </div>
   </main>
 </template>
@@ -26,8 +36,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useTasksStore } from '~/stores/tasks'
-import TaskItem from '~/components/taskItem.vue'
-import TaskPanel from '~/components/taskPanel.vue'
+import TaskItem from '~/components/TaskItem.vue'
+import TaskPanel from '~/components/TaskPanel.vue'
 import type { Task } from '~/types/Task'
 
 const tasksStore = useTasksStore()

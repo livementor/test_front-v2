@@ -1,5 +1,5 @@
 <template>
-  <article 
+  <article
     class="relative task-item flex justify-between p-4 border-l-8 rounded-lg shadow-sm transition-all bg-gray-100 overflow-hidden"
     :style="{ borderLeftColor: getCategoryColor(task.categories[0]) }"
   >
@@ -12,10 +12,19 @@
           @change.stop="toggleCompletion"
         >
 
-        <div class="flex-1 overflow-hidden leading-none">
+        <div class="flex-1 overflow-hidden leading-none relative">
+          <input
+            v-if="isEditingTitle"
+            v-model="editedTitle"
+            class="text-lg font-medium w-full border-b border-gray-300 focus:outline-none focus:border-blue-500 px-2"
+            @keyup.enter="saveTitle"
+            @blur="saveTitle"
+          >
           <div
-            class="text-lg font-medium w-full cursor-text whitespace-pre-wrap break-all overflow-hidden"
+            v-else
+            class="text-lg font-medium w-full cursor-text whitespace-pre-wrap break-all overflow-hidden pr-8"
             :class="{ 'line-through text-gray-500': task.completed }"
+            @click="enableTitleEditing"
           >
             {{ task.title }}
           </div>
@@ -26,7 +35,7 @@
         </div>
       </div>
 
-      <div class="mt-2 ml-10"> 
+      <div class="mt-2 ml-10">
         <div
           v-if="task.description"
           class="text-sm text-gray-600 whitespace-pre-wrap break-all overflow-hidden"
@@ -36,12 +45,20 @@
       </div>
     </div>
 
-    <button
-      class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center bg-red-400 text-white rounded-lg opacity-40 hover:opacity-80 hover:scale-105 backdrop-blur-sm transition-all"
-      @click="$emit('delete', task.id)"
-    >
-      <span class="text-sm">❌</span> 
-    </button>
+    <div class="absolute top-2 right-2 flex space-x-2">
+      <button
+        class="w-6 h-6 flex items-center justify-center bg-blue-400 text-white rounded-lg opacity-40 hover:opacity-80 hover:scale-105 backdrop-blur-sm transition-all"
+        @click="openSidebarEdit"
+      >
+        ✏️
+      </button>
+      <button
+        class="w-6 h-6 flex items-center justify-center bg-red-400 text-white rounded-lg opacity-40 hover:opacity-80 hover:scale-105 backdrop-blur-sm transition-all"
+        @click="$emit('delete', task.id)"
+      >
+        ❌
+      </button>
+    </div>
   </article>
 </template>
 
@@ -49,17 +66,21 @@
 import { defineProps, defineEmits, ref, computed, onMounted } from 'vue'
 import type { Task } from '~/types/Task'
 import { useApi } from '~/composables/useApi.composable'
+import { useTasksStore } from '~/stores/tasks'
 
 const props = defineProps<{ task: Task }>()
 const emit = defineEmits(['edit', 'delete'])
 const api = useApi()
-const categories = ref<{ id: number; name: string; color: string }[]>([])
+const tasksStore = useTasksStore()
+const categories = ref<{ id: number, name: string, color: string }[]>([])
+const isEditingTitle = ref(false)
+const editedTitle = ref(props.task.title)
 
 const fetchCategories = async () => {
   categories.value = (await api.categories.getAll()).map(category => ({
     id: category.id,
     name: category.name,
-    color: category.color ?? '#D3D3D3'
+    color: category.color ?? '#D3D3D3',
   }))
 }
 
@@ -75,6 +96,23 @@ const formattedDate = computed(() => {
 
 const toggleCompletion = () => {
   emit('edit', { id: props.task.id, completed: !props.task.completed })
+}
+
+const enableTitleEditing = () => {
+  isEditingTitle.value = true
+  editedTitle.value = props.task.title
+}
+
+const saveTitle = () => {
+  if (editedTitle.value.trim() && editedTitle.value !== props.task.title) {
+    emit('edit', { id: props.task.id, title: editedTitle.value.trim() })
+  }
+  isEditingTitle.value = false
+}
+
+const openSidebarEdit = () => {
+  tasksStore.setEditingTask(props.task)
+  tasksStore.isSidebarOpen = true
 }
 
 onMounted(fetchCategories)

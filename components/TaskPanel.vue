@@ -1,63 +1,70 @@
 <template>
   <div>
-    <button 
-      @click="isOpen = !isOpen" 
+    <button
       class="absolute top-4 left-4 px-4 py-2 text-gray-600 rounded-lg border border-gray-300 hover:bg-gray-100 transition shadow-sm"
+      @click="toggleSidebar"
     >
-      + Ajouter une tâche
+      {{ tasksStore.editingTask ? "Modifier la tâche" : "➕ Ajouter une tâche" }}
     </button>
 
     <Transition name="slide">
-      <div 
-        v-if="isOpen" 
+      <div
+        v-if="tasksStore.isSidebarOpen"
         class="task-panel z-50"
       >
-        <h2 class="text-lg font-semibold text-gray-900 mb-3">Nouvelle tâche</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-3">
+          {{ tasksStore.editingTask ? "Modifier la tâche" : "Nouvelle tâche" }}
+        </h2>
 
-        <input 
-          v-model="title" 
+        <input
+          v-model="title"
           placeholder="Titre (obligatoire)"
           class="w-full p-3 border rounded-lg shadow-sm bg-gray-100 text-gray-900 focus:ring-2 focus:ring-blue-500 mb-2"
           :class="{ 'border-red-500': titleError }"
         >
-        <p v-if="titleError" class="text-red-500 text-sm mt-1">Le titre est obligatoire.</p>
+        <p
+          v-if="titleError"
+          class="text-red-500 text-sm mt-1"
+        >
+          Le titre est obligatoire.
+        </p>
 
-        <textarea 
-          v-model="description" 
+        <textarea
+          v-model="description"
           placeholder="Description"
           class="w-full p-3 border rounded-lg shadow-sm bg-gray-100 text-gray-900 focus:ring-2 focus:ring-blue-500 mb-2"
-        ></textarea>
+        />
 
-        <h3 class="text-md font-semibold text-gray-900 mb-2">Catégorie correspondante :</h3>
+        <h3 class="text-md font-semibold text-gray-900 mb-2">
+          Catégorie correspondante :
+        </h3>
         <div class="flex flex-wrap gap-2">
-          <button 
-            v-for="category in categories" 
-            :key="category.id" 
-            @click="selectCategory(category.id)" 
+          <button
+            v-for="category in categories"
+            :key="category.id"
             class="px-3 py-2 rounded-lg shadow-md font-semibold focus:outline-none"
-            :class="{
-              'border-2 border-gray-400': selectedCategory === category.id,
-            }"
+            :class="{ 'border-2 border-gray-400': selectedCategory === category.id }"
             :style="{ backgroundColor: category.color, color: 'white' }"
+            @click="selectCategory(category.id)"
           >
             {{ category.name }}
           </button>
         </div>
 
         <div class="flex justify-between mt-4">
-          <button 
-            @click="isOpen = false" 
+          <button
             class="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition"
+            @click="cancelEdit"
           >
             Annuler
           </button>
-          <button 
-            @click="addTask" 
+          <button
             class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
             :disabled="!title.trim()"
             :class="{ 'opacity-50 cursor-not-allowed': !title.trim() }"
+            @click="saveTask"
           >
-            Ajouter
+            {{ tasksStore.editingTask ? "Enregistrer" : "Ajouter" }}
           </button>
         </div>
       </div>
@@ -66,15 +73,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useTasksStore } from '~/stores/tasks'
 import { useApi } from '~/composables/useApi.composable'
 
-const isOpen = ref(false)
 const title = ref('')
 const description = ref('')
 const selectedCategory = ref<number | null>(null)
-const categories = ref<{ id: number; name: string; color: string }[]>([])
+const categories = ref<{ id: number, name: string, color: string }[]>([])
 const titleError = ref(false)
 
 const tasksStore = useTasksStore()
@@ -84,37 +90,70 @@ const fetchCategories = async () => {
   categories.value = (await api.categories.getAll()).map(category => ({
     id: category.id,
     name: category.name,
-    color: category.color ?? '#D3D3D3' 
+    color: category.color ?? '#D3D3D3',
   }))
 }
 
 const selectCategory = (categoryId: number) => {
-  if (selectedCategory.value === categoryId) {
-    selectedCategory.value = null
-  } else {
-    selectedCategory.value = categoryId
-  }
+  selectedCategory.value = selectedCategory.value === categoryId ? null : categoryId
 }
 
-const addTask = () => {
+const saveTask = () => {
   if (!title.value.trim()) {
     titleError.value = true
     return
   }
 
-  tasksStore.addTask({
-    title: title.value.trim(),
-    description: description.value.trim(),
-    completed: false,
-    categories: selectedCategory.value ? [selectedCategory.value] : [],
-  })
+  if (tasksStore.editingTask) {
+    tasksStore.updateTask(tasksStore.editingTask.id, {
+      title: title.value.trim(),
+      description: description.value.trim(),
+      categories: selectedCategory.value ? [selectedCategory.value] : [],
+    })
+  }
+  else {
+    tasksStore.addTask({
+      title: title.value.trim(),
+      description: description.value.trim(),
+      completed: false,
+      categories: selectedCategory.value ? [selectedCategory.value] : [],
+    })
+  }
 
+  closeSidebar()
+}
+
+const toggleSidebar = () => {
+  tasksStore.isSidebarOpen = !tasksStore.isSidebarOpen
+  if (!tasksStore.isSidebarOpen) {
+    resetForm()
+  }
+}
+
+const closeSidebar = () => {
+  tasksStore.isSidebarOpen = false
+  resetForm()
+}
+
+const cancelEdit = () => {
+  closeSidebar()
+}
+
+const resetForm = () => {
   title.value = ''
   description.value = ''
   selectedCategory.value = null
-  isOpen.value = false
-  titleError.value = false
+  tasksStore.setEditingTask(null)
 }
+
+watch(() => tasksStore.editingTask, (task) => {
+  if (task) {
+    title.value = task.title
+    description.value = task.description || ''
+    selectedCategory.value = task.categories.length > 0 ? task.categories[0] : null
+    tasksStore.isSidebarOpen = true
+  }
+})
 
 onMounted(fetchCategories)
 </script>
@@ -149,5 +188,4 @@ onMounted(fetchCategories)
     left: 10px;
   }
 }
-
 </style>

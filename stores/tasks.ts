@@ -5,6 +5,8 @@ import { useApi } from '~/composables/useApi.composable'
 
 export const useTasksStore = defineStore('tasks', () => {
   const tasks = ref<Task[]>([])
+  const editingTask = ref<Task | null>(null)
+  const isSidebarOpen = ref(false)
   const api = useApi()
 
   const fetchTasks = async () => {
@@ -50,9 +52,18 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   }
 
+  const setEditingTask = (task: Task | null) => {
+    editingTask.value = task
+  }
+
+  const toggleSidebar = (task: Task | null = null) => {
+    editingTask.value = task
+    isSidebarOpen.value = !isSidebarOpen.value
+  }
+
   const reorderTasks = () => {
     tasks.value.sort((a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1)
   }
 
-  return { tasks, fetchTasks, addTask, updateTask, deleteTask, reorderTasks }
+  return { tasks, fetchTasks, addTask, updateTask, deleteTask, reorderTasks, editingTask, setEditingTask, isSidebarOpen, toggleSidebar }
 })
