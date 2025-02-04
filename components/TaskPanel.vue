@@ -79,7 +79,7 @@ import { useApi } from '~/composables/useApi.composable'
 
 const title = ref('')
 const description = ref('')
-const selectedCategory = ref<number | null>(null)
+const selectedCategory = ref<number | undefined>(undefined)
 const categories = ref<{ id: number, name: string, color: string }[]>([])
 const titleError = ref(false)
 
@@ -95,7 +95,7 @@ const fetchCategories = async () => {
 }
 
 const selectCategory = (categoryId: number) => {
-  selectedCategory.value = selectedCategory.value === categoryId ? null : categoryId
+  selectedCategory.value = selectedCategory.value === categoryId ? undefined : categoryId
 }
 
 const saveTask = () => {
@@ -103,12 +103,11 @@ const saveTask = () => {
     titleError.value = true
     return
   }
-
   if (tasksStore.editingTask) {
     tasksStore.updateTask(tasksStore.editingTask.id, {
       title: title.value.trim(),
       description: description.value.trim(),
-      categories: selectedCategory.value ? [selectedCategory.value] : [],
+      category: selectedCategory.value,
     })
   }
   else {
@@ -116,7 +115,7 @@ const saveTask = () => {
       title: title.value.trim(),
       description: description.value.trim(),
       completed: false,
-      categories: selectedCategory.value ? [selectedCategory.value] : [],
+      category: selectedCategory.value,
     })
   }
 
@@ -142,7 +141,7 @@ const cancelEdit = () => {
 const resetForm = () => {
   title.value = ''
   description.value = ''
-  selectedCategory.value = null
+  selectedCategory.value = undefined
   tasksStore.setEditingTask(null)
 }
 
@@ -150,7 +149,7 @@ watch(() => tasksStore.editingTask, (task) => {
   if (task) {
     title.value = task.title
     description.value = task.description || ''
-    selectedCategory.value = task.categories.length > 0 ? task.categories[0] : null
+    selectedCategory.value = task.category
     tasksStore.isSidebarOpen = true
   }
 })

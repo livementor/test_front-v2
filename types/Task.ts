@@ -4,5 +4,5 @@ export interface Task {
   description?: string
   completed: boolean
   createdAt: Date
-  categories: number[]
+  category?: number
 }

@@ -13,12 +13,12 @@ export default defineEventHandler(async (event) => {
     return null
   }
 
-  const { title, description, completed, categories } = body
+  const { title, description, completed, category } = body
 
   task.title = title || task.title
   task.description = description || task.description
   task.completed = completed !== undefined ? completed : task.completed
-  task.categories = categories || task.categories
+  task.category = category
 
   await storage.setItem('tasks', tasks)
   return task

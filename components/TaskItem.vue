@@ -1,7 +1,8 @@
 <template>
   <article
-    class="relative task-item flex justify-between p-4 border-l-8 rounded-lg shadow-sm transition-all bg-gray-100 overflow-hidden"
-    :style="{ borderLeftColor: getCategoryColor(task.categories[0]) }"
+    class="relative task-item flex justify-between p-4 rounded-lg shadow-sm transition-all bg-gray-100 overflow-hidden"
+    :class="{ 'border-l-8': task.category !== undefined }"
+    :style="task.category !== undefined ? { borderLeftColor: getCategoryColor(task.category) } : {}"
   >
     <div class="flex-1 flex flex-col overflow-hidden pr-4">
       <div class="flex items-center space-x-3">
@@ -13,18 +14,9 @@
         >
 
         <div class="flex-1 overflow-hidden leading-none relative">
-          <input
-            v-if="isEditingTitle"
-            v-model="editedTitle"
-            class="text-lg font-medium w-full border-b border-gray-300 focus:outline-none focus:border-blue-500 px-2"
-            @keyup.enter="saveTitle"
-            @blur="saveTitle"
-          >
           <div
-            v-else
             class="text-lg font-medium w-full cursor-text whitespace-pre-wrap break-all overflow-hidden pr-8"
             :class="{ 'line-through text-gray-500': task.completed }"
-            @click="enableTitleEditing"
           >
             {{ task.title }}
           </div>
@@ -35,7 +27,7 @@
         </div>
       </div>
 
-      <div class="mt-2 ml-10">
+      <div class="mt-2">
         <div
           v-if="task.description"
           class="text-sm text-gray-600 whitespace-pre-wrap break-all overflow-hidden"
@@ -73,8 +65,6 @@ const emit = defineEmits(['edit', 'delete'])
 const api = useApi()
 const tasksStore = useTasksStore()
 const categories = ref<{ id: number, name: string, color: string }[]>([])
-const isEditingTitle = ref(false)
-const editedTitle = ref(props.task.title)
 
 const fetchCategories = async () => {
   categories.value = (await api.categories.getAll()).map(category => ({
@@ -96,18 +86,6 @@ const formattedDate = computed(() => {
 
 const toggleCompletion = () => {
   emit('edit', { id: props.task.id, completed: !props.task.completed })
-}
-
-const enableTitleEditing = () => {
-  isEditingTitle.value = true
-  editedTitle.value = props.task.title
-}
-
-const saveTitle = () => {
-  if (editedTitle.value.trim() && editedTitle.value !== props.task.title) {
-    emit('edit', { id: props.task.id, title: editedTitle.value.trim() })
-  }
-  isEditingTitle.value = false
 }
 
 const openSidebarEdit = () => {
