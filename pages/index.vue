@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useTasksStore } from '~/stores/tasks'
-import TaskItem from '~/components/TaskItem.vue'
+import TaskItem from '~/components/taskItem.vue'
 
 const tasksStore = useTasksStore()
 const newTaskTitle = ref('')
