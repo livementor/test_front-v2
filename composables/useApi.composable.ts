@@ -4,20 +4,18 @@ import type { Category } from '~/types/Category'
 export const useApi = () => {
   return {
     categories: {
-      get: () => $fetch<Category[]>('/api/categories', { method: 'GET' }),
+      getAll: () => $fetch<Category[]>('/api/categories', { method: 'GET' }),
     },
-    task: {
-      post: (payload: any) => {
-        return $fetch<Task>('/api/tasks', { method: 'POST', body: payload })
-      },
-      put: (payload: any) => {
-        return $fetch<Task>(`/api/tasks/${payload.id}`, { method: 'PUT', body: payload })
-      },
-      delete: (id: number) => {
-        return $fetch(`/api/tasks/${id}`, { method: 'DELETE' })
-      },
-      getAll: () => {
-        return $fetch<Task[]>('/api/tasks', { method: 'GET' })
+    tasks: {
+      create: (payload: Omit<Task, 'id' | 'createdAt'>) =>
+        $fetch<Task>('/api/tasks', { method: 'POST', body: payload }),
+      update: (taskId: number, payload: Partial<Task>) =>
+        $fetch<Task>(`/api/tasks/${taskId}`, { method: 'PUT', body: payload }),
+      remove: (taskId: number) =>
+        $fetch(`/api/tasks/${taskId}`, { method: 'DELETE' }),
+      getAll: async () => {
+        const tasks = await $fetch<Task[]>('/api/tasks', { method: 'GET' })
+        return tasks.map(t => ({ ...t, createdAt: new Date(t.createdAt) }))
       },
     },
   }

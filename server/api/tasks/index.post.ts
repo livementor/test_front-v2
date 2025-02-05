@@ -11,10 +11,10 @@ export default defineEventHandler(async (event) => {
   const newTask = {
     id: generateID(),
     title: body.title,
-    description: body.description,
+    description: body.description || '',
     completed: false,
     createdAt: new Date(),
-    categories: body.categories,
+    category: body.category,
   }
 
   tasks.push(newTask)
