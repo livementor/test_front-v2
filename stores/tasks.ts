@@ -36,7 +36,7 @@ export const useTasksStore = defineStore('tasks', () => {
         task.id === taskId ? { ...task, ...updates } : task,
       )
       await api.tasks.update(taskId, updates)
-      t reorderTasks()
+      reorderTasks()
     }
     catch (error) {
       console.error('Error updating task:', error)
