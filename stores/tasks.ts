@@ -32,9 +32,10 @@ export const useTasksStore = defineStore('tasks', () => {
 
   const updateTask = async (taskId: number, updates: Partial<Task>) => {
     try {
-      const updatedTask = await api.tasks.update(taskId, updates)
-      tasks.value = tasks.value.map(task => (task.id === taskId ? updatedTask : task))
-      reorderTasks()
+      tasks.value = tasks.value.map(task =>
+        task.id === taskId ? { ...task, ...updates } : task,
+      )
+      await api.tasks.update(taskId, updates)
     }
     catch (error) {
       console.error('Error updating task:', error)

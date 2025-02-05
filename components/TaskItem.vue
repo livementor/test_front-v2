@@ -14,16 +14,13 @@
         >
 
         <div class="flex-1 overflow-hidden leading-none relative">
-          <div
-            class="text-lg font-medium w-full cursor-text whitespace-pre-wrap break-all overflow-hidden pr-8"
+          <p
+            class="text-lg font-medium"
             :class="{ 'line-through text-gray-500': task.completed }"
           >
             {{ task.title }}
-          </div>
-
-          <span class="text-xs text-gray-500 mt-1 block">
-            Créée le {{ formattedDate }}
-          </span>
+          </p>
+          <small class="text-gray-500">Créée le {{ formattedDate }}</small>
         </div>
       </div>
 
@@ -65,6 +62,7 @@ const emit = defineEmits(['edit', 'delete'])
 const api = useApi()
 const tasksStore = useTasksStore()
 const categories = ref<{ id: number, name: string, color: string }[]>([])
+const formattedDate = computed(() => new Date(props.task.createdAt).toLocaleDateString('fr-FR'))
 
 const fetchCategories = async () => {
   categories.value = (await api.categories.getAll()).map(category => ({
@@ -79,13 +77,10 @@ const getCategoryColor = (categoryId: number) => {
   return category ? category.color : '#D3D3D3'
 }
 
-const formattedDate = computed(() => {
-  const date = new Date(props.task.createdAt)
-  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
-})
 
 const toggleCompletion = () => {
   emit('edit', { id: props.task.id, completed: !props.task.completed })
+  tasksStore.updateTask(props.task.id, { completed: !props.task.completed })
 }
 
 const openSidebarEdit = () => {
