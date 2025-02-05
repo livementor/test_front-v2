@@ -26,15 +26,15 @@ import TaskDescription from './TaskDescription.vue'
 import TaskActions from './TaskActions.vue'
 import type { Task } from '~/types/Task'
 import { useTasksStore } from '~/stores/tasks'
-import useCategoryColorComposable from '~/composables/useCategoryColor.composable';
+import { useCategories } from '~/composables/useCategories.composable'
 
 const props = defineProps<{ task: Task }>()
 const emit = defineEmits(['delete', 'edit'])
 const tasksStore = useTasksStore()
-const { getCategoryColor } = useCategoryColorComposable()
+const { getCategoryColor } = useCategories()
 
 const hasCategory = computed(() => props.task.category !== undefined)
-const categoryStyle = computed(() => (hasCategory.value ? { borderLeftColor: getCategoryColor(props.task.category) } : {}))
+const categoryStyle = computed(() => (hasCategory.value && props.task.category ? { borderLeftColor: getCategoryColor(props.task.category) } : {}))
 
 const toggleCompletion = () => {
   emit('edit', { id: props.task.id, completed: !props.task.completed })

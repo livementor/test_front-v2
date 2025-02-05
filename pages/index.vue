@@ -40,7 +40,7 @@
 import { onMounted } from 'vue'
 import { useTasksStore } from '~/stores/tasks'
 import TaskItem from '~/components/task_item/TaskItem.vue'
-import TaskSidebar from '~/components/TaskSidebar.vue'
+import TaskSidebar from '~/components/sidebar/TaskSidebar.vue'
 import type { Task } from '~/types/Task'
 
 const tasksStore = useTasksStore()
