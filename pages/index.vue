@@ -1,6 +1,6 @@
 <template>
   <main class="max-w-screen-md mx-auto p-6 space-y-4">
-    <TaskPanel />
+    <TaskSidebar />
 
     <header class="text-center">
       <h2 class="text-5xl font-extrabold text-gray-900 tracking-wide border-b-4 border-gray-300 pb-2 mt-8">
@@ -39,8 +39,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useTasksStore } from '~/stores/tasks'
-import TaskItem from '~/components/TaskItem.vue'
-import TaskPanel from '~/components/TaskPanel.vue'
+import TaskItem from '~/components/task_item/TaskItem.vue'
+import TaskSidebar from '~/components/TaskSidebar.vue'
 import type { Task } from '~/types/Task'
 
 const tasksStore = useTasksStore()
